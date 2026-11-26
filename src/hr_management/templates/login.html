@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in | {{COMPANY}} Careers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Manrope:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<div class="login">
+  <section class="login-art" aria-label="How hiring works here">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12 L6 6 L10 9 L14 3" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>{{COMPANY}} Careers</div>
+    <div>
+      <h1>Your application, one clear route.</h1>
+      <p class="lede">Upload your resume and see exactly where you stand. Clear each round and the next one opens straight away, with an email at every step.</p>
+      <svg class="route" viewBox="0 0 560 190" role="img" aria-label="Resume screen, mock test, interview, next steps">
+        <defs><linearGradient id="routeGrad" x1="0" x2="1"><stop offset="0" stop-color="#8f84ff"/><stop offset="1" stop-color="#12b886"/></linearGradient></defs>
+        <path class="track" d="M30 120 C 110 120, 120 60, 190 60 S 290 130, 370 120 S 470 60, 530 60"/>
+        <path class="draw" d="M30 120 C 110 120, 120 60, 190 60 S 290 130, 370 120 S 470 60, 530 60"/>
+        <circle class="stop" cx="30" cy="120" r="11" style="animation-delay:.4s"/>
+        <circle class="stop" cx="190" cy="60" r="11" style="animation-delay:1s"/>
+        <circle class="stop" cx="370" cy="120" r="11" style="animation-delay:1.7s"/>
+        <circle class="stop" cx="530" cy="60" r="11" style="animation-delay:2.4s"/>
+        <text class="stop-label" x="12" y="158" style="animation-delay:.5s">Resume</text>
+        <text class="stop-sub" x="12" y="176" style="animation-delay:.5s">ATS score {{ATS}}+</text>
+        <text class="stop-label" x="160" y="28" style="animation-delay:1.1s">Mock test</text>
+        <text class="stop-sub" x="160" y="44" style="animation-delay:1.1s">{{TEST}}% to pass</text>
+        <text class="stop-label" x="335" y="158" style="animation-delay:1.8s">Interview</text>
+        <text class="stop-sub" x="335" y="176" style="animation-delay:1.8s">Score {{INTERVIEW}}+</text>
+        <text class="stop-label" x="462" y="28" style="animation-delay:2.5s">Next steps</text>
+        <text class="stop-sub" x="462" y="44" style="animation-delay:2.5s">HR follows up</text>
+      </svg>
+    </div>
+    <p class="faint" style="color:#8e91b8;margin:0">You sign in with a one-time code sent to your email. No password needed.</p>
+  </section>
+
+  <section class="login-panel">
+    <div class="login-card">
+      <div id="step-email">
+        <h2>Sign in</h2>
+        <p class="muted">Use the email you want hiring updates sent to.</p>
+        <form id="email-form" novalidate>
+          <label class="field">Email address
+            <input class="input" id="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+          </label>
+          <button class="btn" type="submit" id="send-btn">Email me a code</button>
+        </form>
+      </div>
+
+      <div id="step-code" class="hidden">
+        <h2>Check your inbox</h2>
+        <p class="muted">We sent a 6-digit code to <b id="sent-to"></b>. It expires in <span id="ttl">10</span> minutes.</p>
+        <form id="code-form" novalidate>
+          <div class="otp-row" role="group" aria-label="6-digit code">
+            <input class="input" inputmode="numeric" maxlength="1" aria-label="Digit 1">
+            <input class="input" inputmode="numeric" maxlength="1" aria-label="Digit 2">
+            <input class="input" inputmode="numeric" maxlength="1" aria-label="Digit 3">
+            <input class="input" inputmode="numeric" maxlength="1" aria-label="Digit 4">
+            <input class="input" inputmode="numeric" maxlength="1" aria-label="Digit 5">
+            <input class="input" inputmode="numeric" maxlength="1" aria-label="Digit 6">
+          </div>
+          <div id="dev-hint" class="dev-hint hidden"></div>
+          <button class="btn" type="submit" id="verify-btn">Sign in</button>
+          <p class="faint" style="margin:0">Wrong email? <button type="button" class="linkish" id="back-btn">Use a different one</button></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/login.js"></script>
+</body>
+</html>
