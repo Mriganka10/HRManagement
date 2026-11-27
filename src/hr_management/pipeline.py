@@ -11,10 +11,13 @@
                                   │ candidate starts → interview_in_progress
                                   │ score >= HRM_INTERVIEW_PASS_SCORE (75)
                                   ├── no  → interview_rejected  (email: interview_rejection)
-                                  └── yes → interview_passed    (email: interview_thanks)
+                                  └── yes ─┬─ HRM_AUTO_SELECT=true  → selected (email: selected + onboarding link)
+                                           └─ HRM_AUTO_SELECT=false → interview_passed (email: interview_thanks)
+                                                 HR decides → selected | not_selected (email: not_selected)
+        selected → candidate submits the prefilled onboarding form → hired
+                   (employee record + account created, email: welcome_credentials)
 
-Everything about *rules* lives here; routes only call these functions. Later stages
-(HR review, offer, onboarding) are added by extending ``STAGES`` and ``TRANSITIONS``.
+Everything about *rules* lives here; routes only call these functions.
 """
 from __future__ import annotations
 
@@ -31,6 +34,9 @@ INTERVIEW_PENDING = "interview_pending"
 INTERVIEW_IN_PROGRESS = "interview_in_progress"
 INTERVIEW_REJECTED = "interview_rejected"
 INTERVIEW_PASSED = "interview_passed"
+SELECTED = "selected"
+NOT_SELECTED = "not_selected"
+HIRED = "hired"
 
 # Display metadata used by both the candidate and HR screens.
 STAGES: dict[str, dict[str, object]] = {
@@ -42,7 +48,10 @@ STAGES: dict[str, dict[str, object]] = {
     INTERVIEW_PENDING: {"label": "Interview unlocked", "step": 3, "tone": "action", "final": False},
     INTERVIEW_IN_PROGRESS: {"label": "Interview in progress", "step": 3, "tone": "active", "final": False},
     INTERVIEW_REJECTED: {"label": "Not selected (Interview)", "step": 3, "tone": "rejected", "final": True},
-    INTERVIEW_PASSED: {"label": "Interview cleared – next steps soon", "step": 4, "tone": "passed", "final": True},
+    INTERVIEW_PASSED: {"label": "Interview cleared – awaiting HR decision", "step": 4, "tone": "action", "final": False},
+    SELECTED: {"label": "Selected – onboarding form pending", "step": 4, "tone": "passed", "final": False},
+    NOT_SELECTED: {"label": "Not selected (HR decision)", "step": 4, "tone": "rejected", "final": True},
+    HIRED: {"label": "Hired – employee account created", "step": 5, "tone": "passed", "final": True},
 }
 
 # Allowed moves. Anything else is refused by ``db.transition_stage``.
@@ -51,7 +60,9 @@ TRANSITIONS: dict[str, tuple[str, ...]] = {
     TEST_PENDING: (TEST_IN_PROGRESS,),
     TEST_IN_PROGRESS: (TEST_REJECTED, INTERVIEW_PENDING),
     INTERVIEW_PENDING: (INTERVIEW_IN_PROGRESS,),
-    INTERVIEW_IN_PROGRESS: (INTERVIEW_REJECTED, INTERVIEW_PASSED),
+    INTERVIEW_IN_PROGRESS: (INTERVIEW_REJECTED, INTERVIEW_PASSED, SELECTED),
+    INTERVIEW_PASSED: (SELECTED, NOT_SELECTED),
+    SELECTED: (HIRED, NOT_SELECTED),
 }
 
 # Which email goes out when an application lands in a stage.
@@ -62,6 +73,8 @@ STAGE_EMAILS: dict[str, str] = {
     INTERVIEW_PENDING: "interview_invite",
     INTERVIEW_REJECTED: "interview_rejection",
     INTERVIEW_PASSED: "interview_thanks",
+    SELECTED: "selected",
+    NOT_SELECTED: "not_selected",
 }
 
 
@@ -93,7 +106,8 @@ def decide_test(percent: float) -> Decision:
 
 
 def decide_interview(score: float) -> Decision:
-    return _decide(score, get_settings().interview_pass_score, INTERVIEW_PASSED, INTERVIEW_REJECTED)
+    pass_stage = SELECTED if get_settings().auto_select else INTERVIEW_PASSED
+    return _decide(score, get_settings().interview_pass_score, pass_stage, INTERVIEW_REJECTED)
 
 
 def thresholds() -> dict[str, float]:

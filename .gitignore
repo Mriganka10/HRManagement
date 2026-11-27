@@ -16,3 +16,6 @@ data/
 .idea/
 .DS_Store
 Thumbs.db
+
+# AWS deployment parameters (account IDs, ARNs)
+deploy/aws/params.env

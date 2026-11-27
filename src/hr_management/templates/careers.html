@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/static/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/static/css/app.css?v={{VERSION}}">
+  <title>My applications | {{COMPANY}} Careers</title>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/careers"><img src="/static/img/kairoz-logo-white.png" alt="{{COMPANY}} Careers" height="32"></a>
+  <div class="who">
+    <span class="email" id="me-email"></span>
+    <span class="avatar" id="me-avatar" aria-hidden="true"></span>
+    <button class="btn ghost small" id="logout-btn">Sign out</button>
+  </div>
+</header>
+<main class="page" id="main" tabindex="-1"><div class="empty">Loading your applications…</div></main>
+<div class="focus hidden" id="focus" role="dialog" aria-modal="true" aria-labelledby="focus-title"></div>
+<script>window.HRM_LOGIN = '/careers/login';</script>
+<script src="/static/js/common.js?v={{VERSION}}"></script>
+<script src="/static/js/careers.js?v={{VERSION}}"></script>
+</body>
+</html>

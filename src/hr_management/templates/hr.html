@@ -3,52 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hiring board | {{COMPANY}} HR</title>
+  <link rel="icon" href="/static/img/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Manrope:wght@400;600;700;800&display=swap">
-  <link rel="stylesheet" href="/static/css/app.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/static/css/app.css?v={{VERSION}}">
+  <title>{{COMPANY}}</title>
 </head>
 <body>
-<header class="topbar">
-  <div class="brand"><span class="brand-mark" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12 L6 6 L10 9 L14 3" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>{{COMPANY}} HR</div>
-  <div class="who">
-    <span class="email" id="me-email"></span>
-    <span class="avatar" id="me-avatar" aria-hidden="true"></span>
-    <button class="btn ghost small" id="logout-btn">Sign out</button>
-  </div>
-</header>
-
-<main class="page" style="max-width:1320px">
-  <div class="page-head">
-    <div><h1>Hiring board</h1><p class="muted" id="rules"></p></div>
-    <div class="app-tabs" role="tablist" style="margin:0">
-      <button class="app-tab" role="tab" aria-selected="true" data-tab="board">Candidates</button>
-      <button class="app-tab" role="tab" aria-selected="false" data-tab="emails">Email log</button>
-    </div>
-  </div>
-
-  <section id="tab-board">
-    <div class="hr-stats" id="stats"></div>
-    <div class="toolbar">
-      <select class="input" id="role-filter" aria-label="Filter by role"><option value="">All roles</option></select>
-      <input class="input" id="search" type="search" placeholder="Search name or email" aria-label="Search candidates">
-      <button class="btn ghost small" id="reload">Refresh</button>
-    </div>
-    <div class="board" id="board"></div>
-  </section>
-
-  <section id="tab-emails" class="panel hidden">
-    <h2 style="margin-bottom:12px">Emails sent to candidates</h2>
-    <p class="faint" id="email-backend"></p>
-    <div style="overflow:auto"><table class="log" id="email-table"></table></div>
-  </section>
-</main>
-
-<div class="scrim hidden" id="scrim"></div>
-<aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="drawer-title"></aside>
-
-<script src="/static/js/common.js"></script>
-<script src="/static/js/hr.js"></script>
+<div class="empty" style="padding-top:30vh">Loading…</div>
+<script src="/static/js/common.js?v={{VERSION}}"></script>
+<script src="/static/js/hr.js?v={{VERSION}}"></script>
 </body>
 </html>

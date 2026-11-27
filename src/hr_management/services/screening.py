@@ -6,12 +6,10 @@ so every candidate for a role is scored against the same requirements.
 """
 from __future__ import annotations
 
-import shutil
-import uuid
 from dataclasses import asdict
 from pathlib import Path
 
-from .. import db, pipeline
+from .. import db, pipeline, storage
 from ..engines.ats import score_resume
 from ..engines.models import CandidateProfile
 from ..engines.resume import parse_resume
@@ -69,29 +67,34 @@ def submit_application(
         raise ServiceError("Upload a PDF, DOCX, TXT or MD resume.")
     if not content:
         raise ServiceError("The uploaded file is empty.")
-    if len(content) > cfg.max_resume_mb * 1024 * 1024:
-        raise ServiceError(f"Resume must be {cfg.max_resume_mb} MB or smaller.")
+    if len(content) > cfg.max_upload_mb * 1024 * 1024:
+        raise ServiceError(f"Resume must be {cfg.max_upload_mb} MB or smaller.")
+    # Check the bytes, not just the extension.
+    if suffix == ".pdf" and not content.startswith(b"%PDF"):
+        raise ServiceError("This file is not a valid PDF.")
+    if suffix == ".docx" and not content.startswith(b"PK"):
+        raise ServiceError("This file is not a valid DOCX.")
+    if role.status != "open":
+        raise ServiceError("This role is no longer accepting applications.", 410)
     if db.application_for_role(email, role.key):
         raise ServiceError(f"You have already applied for {role.title}.", 409)
 
-    folder = cfg.upload_dir / uuid.uuid4().hex
-    folder.mkdir(parents=True, exist_ok=True)
-    resume_path = folder / f"resume{suffix}"
-    resume_path.write_bytes(content)
-    try:
-        report = score_for_role(resume_path, role, experience_years=experience_years, full_name=full_name, email=email)
-    except ServiceError:
-        shutil.rmtree(folder, ignore_errors=True)
-        raise
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as tmp:
+        local = Path(tmp) / f"resume{suffix}"
+        local.write_bytes(content)
+        report = score_for_role(local, role, experience_years=experience_years, full_name=full_name, email=email)
+    resume_key = storage.put(storage.new_key("resumes", f"resume{suffix}"), content)
 
     try:
         application_id = db.create_application(
             email=email, role_key=role.key, role_title=role.title, full_name=full_name, phone=(phone or "").strip()[:30],
-            experience_years=float(experience_years), resume_name=Path(filename).name[:200], resume_path=str(resume_path),
+            experience_years=float(experience_years), resume_name=Path(filename).name[:200], resume_path=resume_key,
             stage=pipeline.SCREENING,
         )
     except Exception as exc:  # unique (email, role) raced by a double submit
-        shutil.rmtree(folder, ignore_errors=True)
+        storage.delete(resume_key)
         raise ServiceError(f"You have already applied for {role.title}.", 409) from exc
 
     db.add_event(application_id, "applied", actor=email, to_stage=pipeline.SCREENING, detail={"resume": Path(filename).name})

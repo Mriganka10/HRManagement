@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/static/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/static/css/app.css?v={{VERSION}}">
+  <title>Careers sign-in | {{COMPANY}}</title>
+</head>
+<body>
+<div class="auth">
+  <section class="auth-art" aria-label="How hiring works">
+    <a class="brand" href="/"><img src="/static/img/kairoz-logo-white.png" alt="{{COMPANY}} Corporation" height="40"></a>
+    <div>
+      <h1>Your application, one clear route.</h1>
+      <p class="lede">Upload your resume and see exactly where you stand. Clear each round and the next one opens straight away, with an email at every step.</p>
+      <svg class="route" viewBox="0 0 600 190" role="img" aria-label="Resume screen, mock test, interview, onboarding">
+        <defs><linearGradient id="routeGrad" x1="0" x2="1"><stop offset="0" stop-color="#6fd0cf"/><stop offset="1" stop-color="#d99a2b"/></linearGradient></defs>
+        <path class="track" d="M30 120 C 100 120, 110 60, 175 60 S 270 125, 330 120 S 420 60, 470 60 S 540 120, 570 120"/>
+        <path class="draw" d="M30 120 C 100 120, 110 60, 175 60 S 270 125, 330 120 S 420 60, 470 60 S 540 120, 570 120"/>
+        <circle class="stop" cx="30" cy="120" r="10" style="animation-delay:.4s"/>
+        <circle class="stop" cx="175" cy="60" r="10" style="animation-delay:.9s"/>
+        <circle class="stop" cx="330" cy="120" r="10" style="animation-delay:1.5s"/>
+        <circle class="stop" cx="470" cy="60" r="10" style="animation-delay:2.1s"/>
+        <circle class="stop" cx="570" cy="120" r="10" style="animation-delay:2.6s"/>
+        <text class="stop-label" x="10" y="156" style="animation-delay:.5s">Resume</text>
+        <text class="stop-sub" x="10" y="173" style="animation-delay:.5s">ATS {{ATS}}+</text>
+        <text class="stop-label" x="140" y="26" style="animation-delay:1s">Mock test</text>
+        <text class="stop-sub" x="140" y="42" style="animation-delay:1s">{{TEST}}% to pass</text>
+        <text class="stop-label" x="296" y="156" style="animation-delay:1.6s">Interview</text>
+        <text class="stop-sub" x="296" y="173" style="animation-delay:1.6s">Score {{INTERVIEW}}+</text>
+        <text class="stop-label" x="436" y="26" style="animation-delay:2.2s">Selected</text>
+        <text class="stop-sub" x="436" y="42" style="animation-delay:2.2s">Offer email</text>
+        <text class="stop-label" x="520" y="156" style="animation-delay:2.7s">Onboard</text>
+        <text class="stop-sub" x="520" y="173" style="animation-delay:2.7s">Employee ID</text>
+      </svg>
+    </div>
+    <p class="faint" style="color:#7fa3a2;margin:0">Already an employee? <a href="/login" style="color:#9fe0df">Sign in to the employee portal</a></p>
+  </section>
+  <section class="auth-panel">
+    <div class="auth-card">
+      <div id="step-email">
+        <h2>Sign in to Careers</h2>
+        <p class="muted">Use the email you want hiring updates sent to. No password needed.</p>
+        <form id="email-form" novalidate>
+          <label class="field">Email address
+            <input class="input" id="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+          </label>
+          <button class="btn" type="submit" id="send-btn">Email me a code</button>
+        </form>
+      </div>
+      <div id="step-code" class="hidden">
+        <h2>Check your inbox</h2>
+        <p class="muted">We sent a 6-digit code to <b id="sent-to"></b>. It expires in <span id="ttl">10</span> minutes.</p>
+        <form id="code-form" novalidate>
+          <div class="otp-row" role="group" aria-label="6-digit code">
+            <input class="input" inputmode="numeric" maxlength="1" aria-label="Digit 1"><input class="input" inputmode="numeric" maxlength="1" aria-label="Digit 2">
+            <input class="input" inputmode="numeric" maxlength="1" aria-label="Digit 3"><input class="input" inputmode="numeric" maxlength="1" aria-label="Digit 4">
+            <input class="input" inputmode="numeric" maxlength="1" aria-label="Digit 5"><input class="input" inputmode="numeric" maxlength="1" aria-label="Digit 6">
+          </div>
+          <div id="dev-hint" class="dev-hint hidden"></div>
+          <button class="btn" type="submit" id="verify-btn">Sign in</button>
+          <p class="faint" style="margin:0">Wrong email? <button type="button" class="linkish" id="back-btn">Use a different one</button></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+<script src="/static/js/common.js?v={{VERSION}}"></script>
+<script src="/static/js/careers_login.js?v={{VERSION}}"></script>
+</body>
+</html>

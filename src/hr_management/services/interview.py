@@ -146,6 +146,10 @@ def complete(app: dict, answers: Any, integrity: Any) -> tuple[dict, Notice | No
         app["id"], "interview_scored", actor="system", from_stage=pipeline.INTERVIEW_IN_PROGRESS, to_stage=decision.next_stage,
         detail={"score": decision.score, "threshold": decision.threshold, "passed": decision.passed, **integrity_data},
     )
+    if decision.next_stage == pipeline.SELECTED:
+        from .onboarding import open_onboarding  # selection opens the prefilled onboarding form
+
+        open_onboarding(app["id"])
     return report, Notice(kind=decision.email_kind, application_id=app["id"], score=decision.score, threshold=decision.threshold)
 
 

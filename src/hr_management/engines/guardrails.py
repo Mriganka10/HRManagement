@@ -28,6 +28,8 @@ DEFAULT_LIMITS: dict[str, tuple[int, int]] = {
     "otp_request_email": (3, 15 * 60),
     "otp_request_ip": (20, 15 * 60),
     "otp_verify_ip": (30, 15 * 60),
+    "staff_login_ip": (30, 15 * 60),  # HR Management: user-ID/password sign-in
+    "assistant": (120, 60 * 60),  # HR Management: employee assistant messages per hour
     "register_ip": (10, 60 * 60),
     # Expensive work (portal calls, LLM calls, PDF rendering)
     "run": (10, 60 * 60),  # Run Agent: JSearch/Adzuna + LLM ATS review

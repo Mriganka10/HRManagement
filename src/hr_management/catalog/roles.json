@@ -18,7 +18,10 @@
       "Git",
       "Redis"
     ],
-    "description": "Design, build and run the Python services behind our products.\nResponsibilities: build REST APIs, model data in PostgreSQL, write efficient SQL, containerise services, deploy to AWS, add caching, write tests.\nRequired skills: Python, FastAPI, Django, SQL, PostgreSQL, REST APIs, Docker, AWS, Git, Redis.\nExperience: 2+ years in a similar role."
+    "description": "Design, build and run the Python services behind our products.\nResponsibilities: build REST APIs, model data in PostgreSQL, write efficient SQL, containerise services, deploy to AWS, add caching, write tests.\nRequired skills: Python, FastAPI, Django, SQL, PostgreSQL, REST APIs, Docker, AWS, Git, Redis.\nExperience: 2+ years in a similar role.",
+    "annual_ctc": 1200000,
+    "openings": 2,
+    "employment_type": "Full-time"
   },
   {
     "key": "frontend-developer",
@@ -39,7 +42,10 @@
       "Jest",
       "Accessibility"
     ],
-    "description": "Build fast, accessible web interfaces with React and TypeScript.\nResponsibilities: build React components, manage application state, integrate REST APIs, write responsive layouts, test components, review pull requests.\nRequired skills: JavaScript, TypeScript, React, HTML, CSS, Redux, REST APIs, Git, Jest, Accessibility.\nExperience: 1+ years in a similar role."
+    "description": "Build fast, accessible web interfaces with React and TypeScript.\nResponsibilities: build React components, manage application state, integrate REST APIs, write responsive layouts, test components, review pull requests.\nRequired skills: JavaScript, TypeScript, React, HTML, CSS, Redux, REST APIs, Git, Jest, Accessibility.\nExperience: 1+ years in a similar role.",
+    "annual_ctc": 1000000,
+    "openings": 2,
+    "employment_type": "Full-time"
   },
   {
     "key": "data-analyst",
@@ -59,7 +65,10 @@
       "Data Visualization",
       "Dashboards"
     ],
-    "description": "Turn business data into clear decisions for every team.\nResponsibilities: write SQL queries, clean and analyse data, build dashboards, run statistical analysis, present insights to stakeholders.\nRequired skills: SQL, Excel, Python, Pandas, Power BI, Tableau, Statistics, Data Visualization, Dashboards.\nExperience: 1+ years in a similar role."
+    "description": "Turn business data into clear decisions for every team.\nResponsibilities: write SQL queries, clean and analyse data, build dashboards, run statistical analysis, present insights to stakeholders.\nRequired skills: SQL, Excel, Python, Pandas, Power BI, Tableau, Statistics, Data Visualization, Dashboards.\nExperience: 1+ years in a similar role.",
+    "annual_ctc": 700000,
+    "openings": 2,
+    "employment_type": "Full-time"
   },
   {
     "key": "ml-engineer",
@@ -80,7 +89,10 @@
       "MLOps",
       "SQL"
     ],
-    "description": "Build, ship and monitor production machine learning systems.\nResponsibilities: train and evaluate models, work on NLP and computer vision problems, build data pipelines, deploy and monitor models.\nRequired skills: Python, Machine Learning, Deep Learning, PyTorch, TensorFlow, Scikit-learn, NLP, Computer Vision, MLOps, SQL.\nExperience: 2+ years in a similar role."
+    "description": "Build, ship and monitor production machine learning systems.\nResponsibilities: train and evaluate models, work on NLP and computer vision problems, build data pipelines, deploy and monitor models.\nRequired skills: Python, Machine Learning, Deep Learning, PyTorch, TensorFlow, Scikit-learn, NLP, Computer Vision, MLOps, SQL.\nExperience: 2+ years in a similar role.",
+    "annual_ctc": 1400000,
+    "openings": 2,
+    "employment_type": "Full-time"
   },
   {
     "key": "devops-engineer",
@@ -101,7 +113,10 @@
       "Python",
       "Git"
     ],
-    "description": "Run reliable, secure and cost-efficient cloud infrastructure.\nResponsibilities: manage AWS with infrastructure as code, run containers on Kubernetes, build CI/CD pipelines, automate operations, own monitoring and incident response.\nRequired skills: AWS, Docker, Kubernetes, Terraform, CI/CD, Linux, Bash, Monitoring, Python, Git.\nExperience: 2+ years in a similar role."
+    "description": "Run reliable, secure and cost-efficient cloud infrastructure.\nResponsibilities: manage AWS with infrastructure as code, run containers on Kubernetes, build CI/CD pipelines, automate operations, own monitoring and incident response.\nRequired skills: AWS, Docker, Kubernetes, Terraform, CI/CD, Linux, Bash, Monitoring, Python, Git.\nExperience: 2+ years in a similar role.",
+    "annual_ctc": 1200000,
+    "openings": 2,
+    "employment_type": "Full-time"
   },
   {
     "key": "qa-engineer",
@@ -122,7 +137,10 @@
       "Jira",
       "Agile"
     ],
-    "description": "Protect product quality with automated testing.\nResponsibilities: design test plans, automate UI and API tests, validate data, run tests in CI/CD, track defects in Agile teams.\nRequired skills: Selenium, Python, Java, Test Automation, API Testing, Postman, SQL, CI/CD, Jira, Agile.\nExperience: 1+ years in a similar role."
+    "description": "Protect product quality with automated testing.\nResponsibilities: design test plans, automate UI and API tests, validate data, run tests in CI/CD, track defects in Agile teams.\nRequired skills: Selenium, Python, Java, Test Automation, API Testing, Postman, SQL, CI/CD, Jira, Agile.\nExperience: 1+ years in a similar role.",
+    "annual_ctc": 800000,
+    "openings": 2,
+    "employment_type": "Full-time"
   },
   {
     "key": "hr-executive",
@@ -142,7 +160,10 @@
       "Excel",
       "Labour Law"
     ],
-    "description": "Support recruitment and day-to-day people operations.\nResponsibilities: source and screen candidates, coordinate interviews, run onboarding, maintain HRMS records, prepare payroll inputs, drive employee engagement.\nRequired skills: Recruitment, Talent Acquisition, Onboarding, Employee Engagement, HRMS, Payroll, Communication, Excel, Labour Law.\nExperience: 1+ years in a similar role."
+    "description": "Support recruitment and day-to-day people operations.\nResponsibilities: source and screen candidates, coordinate interviews, run onboarding, maintain HRMS records, prepare payroll inputs, drive employee engagement.\nRequired skills: Recruitment, Talent Acquisition, Onboarding, Employee Engagement, HRMS, Payroll, Communication, Excel, Labour Law.\nExperience: 1+ years in a similar role.",
+    "annual_ctc": 500000,
+    "openings": 2,
+    "employment_type": "Full-time"
   },
   {
     "key": "business-analyst",
@@ -162,6 +183,9 @@
       "Power BI",
       "Documentation"
     ],
-    "description": "Connect business goals with product delivery.\nResponsibilities: gather and document requirements, map processes, write user stories, analyse data, build reports, align stakeholders.\nRequired skills: Requirements Gathering, SQL, Excel, Jira, Agile, Stakeholder Management, Process Mapping, Power BI, Documentation.\nExperience: 1+ years in a similar role."
+    "description": "Connect business goals with product delivery.\nResponsibilities: gather and document requirements, map processes, write user stories, analyse data, build reports, align stakeholders.\nRequired skills: Requirements Gathering, SQL, Excel, Jira, Agile, Stakeholder Management, Process Mapping, Power BI, Documentation.\nExperience: 1+ years in a similar role.",
+    "annual_ctc": 900000,
+    "openings": 2,
+    "employment_type": "Full-time"
   }
 ]

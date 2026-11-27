@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from .. import db, pipeline
 from ..roles import get_role
-from . import assessment, interview
+from . import assessment, evaluation, interview
 
 
 def _ats_summary(report: dict | None) -> dict | None:
@@ -41,7 +41,17 @@ def candidate_application(app: dict) -> dict:
              "summary": interview.candidate_summary(iv.get("report") or {}) if iv["status"] == "completed" else None}
             if iv else None
         ),
+        "onboarding": _onboarding_summary(app),
     }
+
+
+def _onboarding_summary(app: dict) -> dict | None:
+    record = db.fetch_one("SELECT status, submitted_at, employee_id FROM onboarding WHERE application_id = ?", (app["id"],))
+    if not record:
+        return None
+    employee = db.fetch_one("SELECT employee_code, date_of_joining FROM employees WHERE id = ?", (record["employee_id"],)) if record.get("employee_id") else None
+    return {"status": record["status"], "submitted_at": record.get("submitted_at"),
+            "employee_code": (employee or {}).get("employee_code"), "date_of_joining": (employee or {}).get("date_of_joining")}
 
 
 def hr_row(app: dict) -> dict:
@@ -87,4 +97,13 @@ def hr_detail(app: dict) -> dict:
         } if iv else None,
         "events": db.events_for_application(app["id"]),
         "emails": db.emails(app["id"]),
+        "evaluation": _evaluation(app),
+        "onboarding": _onboarding_summary(app),
     }
+
+
+def _evaluation(app: dict) -> dict | None:
+    if app.get("test_percent") is None and app.get("interview_score") is None:
+        return None
+    card = evaluation.scorecard(app)
+    return {"scorecard": card, "swot": evaluation.swot(app, card)}

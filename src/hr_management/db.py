@@ -22,7 +22,11 @@ from .settings import get_settings
 
 _init_lock = threading.Lock()
 
-JSON_COLUMNS = {"ats_report", "questions", "topics", "answers", "scorecard", "integrity", "report", "detail"}
+JSON_COLUMNS = {
+    "ats_report", "questions", "topics", "answers", "scorecard", "integrity", "report", "detail",
+    "skills", "education", "experience", "certifications", "prefill", "form", "components",
+    "earnings", "deductions", "payload", "competencies",
+}
 
 
 def utcnow() -> datetime:
@@ -129,119 +133,73 @@ def _ensure_column(conn: Any, table: str, column: str, definition: str) -> None:
         conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {definition}")
 
 
+# --------------------------------------------------------------------------- generic helpers
+# Repositories in ``repos/`` use these instead of hand-writing connection code.
+
+def fetch_one(sql: str, params: tuple[Any, ...] = ()) -> dict[str, Any] | None:
+    with connection() as conn:
+        return _one(conn, sql, params)
+
+
+def fetch_all(sql: str, params: tuple[Any, ...] = ()) -> list[dict[str, Any]]:
+    with connection() as conn:
+        return _all(conn, sql, params)
+
+
+def execute(sql: str, params: tuple[Any, ...] = ()) -> int:
+    """Run a write statement; returns the number of affected rows."""
+    with connection() as conn:
+        return int(_execute(conn, sql, params).rowcount or 0)
+
+
+def _encode(value: Any) -> Any:
+    if isinstance(value, (dict, list, tuple)):
+        return _dump(list(value) if isinstance(value, tuple) else value)
+    if isinstance(value, bool):
+        return int(value)
+    return value
+
+
+def insert(table: str, data: dict[str, Any]) -> int:
+    columns = ", ".join(data)
+    marks = ", ".join("?" for _ in data)
+    with connection() as conn:
+        return _insert(conn, f"INSERT INTO {table} ({columns}) VALUES ({marks})", tuple(_encode(v) for v in data.values()))
+
+
+def update(table: str, row_id: int, data: dict[str, Any], *, where: str = "", params: tuple[Any, ...] = ()) -> int:
+    """UPDATE one row by id, optionally guarded by an extra condition (compare-and-set)."""
+    if not data:
+        return 0
+    columns = ", ".join(f"{name} = ?" for name in data)
+    guard = f" AND ({where})" if where else ""
+    with connection() as conn:
+        cursor = _execute(conn, f"UPDATE {table} SET {columns} WHERE id = ?{guard}",
+                          (*(_encode(v) for v in data.values()), row_id, *params))
+        return int(cursor.rowcount or 0)
+
+
+def audit(actor: str, action: str, entity: str, entity_id: Any = "", detail: dict | None = None) -> None:
+    insert("audit_log", {"actor": actor, "action": action, "entity": entity, "entity_id": str(entity_id),
+                         "detail": detail or {}, "created_at": now_iso()})
+
+
+def ensure_column(conn: Any, table: str, column: str, definition: str) -> None:
+    _ensure_column(conn, table, column, definition)
+
+
 # --------------------------------------------------------------------------- schema
 
 def init_db() -> None:
-    pk = "BIGSERIAL PRIMARY KEY" if _is_postgres() else "INTEGER PRIMARY KEY AUTOINCREMENT"
-    real = "DOUBLE PRECISION" if _is_postgres() else "REAL"
-    statements = [
-        """CREATE TABLE IF NOT EXISTS users (
-            email TEXT PRIMARY KEY,
-            full_name TEXT NOT NULL DEFAULT '',
-            created_at TEXT NOT NULL,
-            last_login_at TEXT
-        )""",
-        f"""CREATE TABLE IF NOT EXISTS otp_codes (
-            id {pk},
-            email TEXT NOT NULL,
-            code_hash TEXT NOT NULL,
-            expires_at TEXT NOT NULL,
-            attempts INTEGER NOT NULL DEFAULT 0,
-            used INTEGER NOT NULL DEFAULT 0,
-            created_at TEXT NOT NULL
-        )""",
-        f"""CREATE TABLE IF NOT EXISTS applications (
-            id {pk},
-            email TEXT NOT NULL,
-            role_key TEXT NOT NULL,
-            role_title TEXT NOT NULL,
-            full_name TEXT NOT NULL DEFAULT '',
-            phone TEXT NOT NULL DEFAULT '',
-            experience_years {real} NOT NULL DEFAULT 0,
-            resume_name TEXT NOT NULL DEFAULT '',
-            resume_path TEXT NOT NULL DEFAULT '',
-            stage TEXT NOT NULL,
-            ats_score {real},
-            ats_report TEXT,
-            test_percent {real},
-            interview_score {real},
-            created_at TEXT NOT NULL,
-            updated_at TEXT NOT NULL,
-            UNIQUE (email, role_key)
-        )""",
-        f"""CREATE TABLE IF NOT EXISTS mock_tests (
-            id {pk},
-            application_id BIGINT NOT NULL UNIQUE REFERENCES applications(id) ON DELETE CASCADE,
-            email TEXT NOT NULL,
-            questions TEXT NOT NULL,
-            topics TEXT NOT NULL DEFAULT '[]',
-            time_limit_seconds INTEGER NOT NULL,
-            status TEXT NOT NULL DEFAULT 'in_progress',
-            started_at TEXT NOT NULL,
-            completed_at TEXT,
-            answers TEXT,
-            scorecard TEXT,
-            percent {real},
-            integrity TEXT
-        )""",
-        f"""CREATE TABLE IF NOT EXISTS interviews (
-            id {pk},
-            application_id BIGINT NOT NULL UNIQUE REFERENCES applications(id) ON DELETE CASCADE,
-            email TEXT NOT NULL,
-            questions TEXT NOT NULL,
-            answers TEXT NOT NULL DEFAULT '{{}}',
-            status TEXT NOT NULL DEFAULT 'in_progress',
-            started_at TEXT NOT NULL,
-            completed_at TEXT,
-            report TEXT,
-            score {real},
-            integrity TEXT
-        )""",
-        f"""CREATE TABLE IF NOT EXISTS email_log (
-            id {pk},
-            application_id BIGINT,
-            recipient TEXT NOT NULL,
-            kind TEXT NOT NULL,
-            subject TEXT NOT NULL,
-            backend TEXT NOT NULL,
-            status TEXT NOT NULL,
-            error TEXT NOT NULL DEFAULT '',
-            created_at TEXT NOT NULL
-        )""",
-        f"""CREATE TABLE IF NOT EXISTS pipeline_events (
-            id {pk},
-            application_id BIGINT NOT NULL,
-            actor TEXT NOT NULL,
-            event TEXT NOT NULL,
-            from_stage TEXT NOT NULL DEFAULT '',
-            to_stage TEXT NOT NULL DEFAULT '',
-            detail TEXT NOT NULL DEFAULT '{{}}',
-            created_at TEXT NOT NULL
-        )""",
-        f"CREATE TABLE IF NOT EXISTS rate_events (id {pk}, bucket TEXT NOT NULL, ts {real} NOT NULL)",
-        f"""CREATE TABLE IF NOT EXISTS llm_usage (
-            id {pk},
-            feature TEXT NOT NULL,
-            user_email TEXT NOT NULL DEFAULT '',
-            input_tokens INTEGER NOT NULL,
-            output_tokens INTEGER NOT NULL,
-            cost_usd {real} NOT NULL,
-            ok INTEGER NOT NULL,
-            day TEXT NOT NULL,
-            created_at TEXT NOT NULL
-        )""",
-        "CREATE INDEX IF NOT EXISTS idx_applications_email ON applications (email)",
-        "CREATE INDEX IF NOT EXISTS idx_applications_stage ON applications (stage)",
-        "CREATE INDEX IF NOT EXISTS idx_otp_email ON otp_codes (email)",
-        "CREATE INDEX IF NOT EXISTS idx_events_app ON pipeline_events (application_id)",
-        "CREATE INDEX IF NOT EXISTS idx_email_app ON email_log (application_id)",
-        "CREATE INDEX IF NOT EXISTS idx_rate_bucket ON rate_events (bucket, ts)",
-    ]
+    from .schema import ADDITIVE_COLUMNS, statements
+
     with _init_lock, connection() as conn:
         if not _is_postgres():
             conn.execute("PRAGMA journal_mode = WAL")
-        for statement in statements:
+        for statement in statements(_is_postgres()):
             _execute(conn, statement)
+        for table, column, definition in ADDITIVE_COLUMNS:
+            _ensure_column(conn, table, column, definition)
 
 
 # --------------------------------------------------------------------------- users & OTP
