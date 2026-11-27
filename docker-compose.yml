@@ -1,0 +1,31 @@
+# Production-like local stack: the app container + PostgreSQL 16.
+#   docker compose up --build        → http://localhost:8000
+#   docker compose exec app python -m hr_management seed-demo   (demo data; set HRM_ENVIRONMENT=development first)
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: hrm
+      POSTGRES_PASSWORD: hrm-local-only
+      POSTGRES_DB: hr_management
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hrm -d hr_management"]
+      interval: 5s
+      retries: 10
+  app:
+    build: .
+    depends_on:
+      db: { condition: service_healthy }
+    ports: ["8000:8000"]
+    environment:
+      HRM_ENVIRONMENT: development           # shows OTPs on screen; use production on AWS
+      HRM_SECRET_KEY: change-me-local-compose-only
+      HRM_DATABASE_URL: postgresql://hrm:hrm-local-only@db:5432/hr_management
+      HRM_COOKIE_SECURE: "false"
+      HRM_PUBLIC_BASE_URL: http://localhost:8000
+      HRM_BOOTSTRAP_HR_EMAIL: hr.admin@kairoz.local
+      HRM_BOOTSTRAP_HR_PASSWORD: ChangeMe2026x
+      HRM_DATA_DIR: /tmp/hrm
+volumes:
+  pgdata:

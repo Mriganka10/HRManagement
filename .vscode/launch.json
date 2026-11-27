@@ -1,0 +1,46 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "HR Management (dev server)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "hr_management",
+      "args": ["--reload"],
+      "cwd": "${workspaceFolder}",
+      "env": { "PYTHONPATH": "${workspaceFolder}/src" },
+      "justMyCode": true
+    },
+    {
+      "name": "Load demo data (seed-demo)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "hr_management",
+      "args": ["seed-demo"],
+      "cwd": "${workspaceFolder}",
+      "env": { "PYTHONPATH": "${workspaceFolder}/src" }
+    },
+    {
+      "name": "Create HR admin (create-hr)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "hr_management",
+      "args": ["create-hr", "--email", "${input:hrEmail}", "--name", "${input:hrName}"],
+      "cwd": "${workspaceFolder}",
+      "env": { "PYTHONPATH": "${workspaceFolder}/src" }
+    },
+    {
+      "name": "Tests (pytest)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["-q"],
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    }
+  ],
+  "inputs": [
+    { "id": "hrEmail", "type": "promptString", "description": "HR admin email" },
+    { "id": "hrName", "type": "promptString", "description": "HR admin full name" }
+  ]
+}

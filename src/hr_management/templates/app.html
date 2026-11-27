@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My applications | {{COMPANY}} Careers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12 L6 6 L10 9 L14 3" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>{{COMPANY}} Careers</div>
+  <div class="who">
+    <span class="email" id="me-email"></span>
+    <span class="avatar" id="me-avatar" aria-hidden="true"></span>
+    <button class="btn ghost small" id="logout-btn">Sign out</button>
+  </div>
+</header>
+
+<main class="page" id="main" tabindex="-1">
+  <div class="empty">Loading your applications…</div>
+</main>
+
+<!-- Full-screen focus mode for the mock test and the interview -->
+<div class="focus hidden" id="focus" role="dialog" aria-modal="true" aria-labelledby="focus-title"></div>
+
+<script src="/static/js/common.js"></script>
+<script src="/static/js/app.js"></script>
+</body>
+</html>

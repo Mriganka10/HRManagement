@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+build/
+dist/
+
+# Local data: database, uploaded resumes and saved emails contain candidate data
+data/
+.env
+
+# Editors / OS
+.idea/
+.DS_Store
+Thumbs.db
+
+# AWS deployment parameters (account IDs, ARNs)
+deploy/aws/params.env

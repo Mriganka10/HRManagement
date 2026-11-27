@@ -1,0 +1,38 @@
+Rahul Verma
+Backend Developer
+rahul.verma@example.com | +91 98300 12345 | Bengaluru, India | linkedin.com/in/rahulverma | github.com/rahulverma
+
+PROFESSIONAL SUMMARY
+Backend Developer with 4 years of experience designing Python REST APIs with FastAPI and Django, modelling data in PostgreSQL, and deploying Docker services on AWS. Improved API latency by 45% and cut infrastructure cost by 30% through caching with Redis and query optimisation.
+
+TECHNICAL SKILLS
+Languages: Python, SQL, Bash
+Frameworks: FastAPI, Django, Django REST Framework, Celery, Pytest
+Databases: PostgreSQL, MySQL, Redis
+Cloud & DevOps: AWS (ECS, Lambda, RDS, S3), Docker, GitHub Actions CI/CD, Terraform, Git
+Practices: REST APIs, microservices, system design, unit testing, code review
+
+PROFESSIONAL EXPERIENCE
+Senior Software Engineer (Backend) | FinEdge Technologies, Bengaluru | Jun 2023 – Present
+- Designed and built 14 FastAPI microservices handling 3M requests/day with 99.95% uptime.
+- Reduced p95 API latency from 820 ms to 450 ms by adding Redis caching and PostgreSQL indexes.
+- Containerised services with Docker and deployed on AWS ECS with GitHub Actions CI/CD, cutting release time by 60%.
+- Led migration of a monolith to microservices, mentoring 3 junior developers and reviewing 200+ pull requests.
+
+Software Engineer | CloudKart Pvt Ltd, Kolkata | Jul 2021 – May 2023
+- Built Django REST APIs for order management used by 1,200 merchants.
+- Optimised SQL queries and schema design, reducing nightly report time from 40 minutes to 6 minutes.
+- Implemented Celery background jobs and Pytest test suites, raising test coverage from 35% to 85%.
+- Automated AWS infrastructure with Terraform, lowering monthly cloud spend by 30%.
+
+PROJECTS
+Payment Reconciliation Service — Python, FastAPI, PostgreSQL, Docker
+- Built an event-driven reconciliation API that matched 500K transactions daily with 99.9% accuracy.
+Rate Limiter Library — Python, Redis
+- Published an open-source sliding-window rate limiter with 300+ GitHub stars.
+
+EDUCATION
+B.Tech in Computer Science and Engineering | Sister Nivedita University, Kolkata | 2017 – 2021 | CGPA 8.6/10
+
+CERTIFICATIONS
+AWS Certified Developer – Associate (2023)

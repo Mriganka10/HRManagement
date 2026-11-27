@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/static/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/static/css/app.css?v={{VERSION}}">
+  <title>Sign in | {{COMPANY}}</title>
+</head>
+<body>
+<div class="auth">
+  <section class="auth-art">
+    <a class="brand" href="/"><img src="/static/img/kairoz-logo-white.png" alt="{{COMPANY}} Corporation" height="40"></a>
+    <div>
+      <h1 id="art-title">Welcome back.</h1>
+      <p class="lede" id="art-lede">Sign in with the user ID {{COMPANY}} sent you. Employee IDs start with KZE and HR IDs with KZH.</p>
+    </div>
+    <p class="faint" style="color:#7fa3a2;margin:0">Forgot your password? Ask HR to reset it — a temporary one is emailed to you.</p>
+  </section>
+  <section class="auth-panel">
+    <div class="auth-card">
+      <h2 id="form-title">Sign in</h2>
+      <p class="muted">Employees and HR use the same sign-in.</p>
+      <form id="login-form" novalidate>
+        <label class="field">User ID
+          <input class="input" id="user_id" autocomplete="username" autocapitalize="characters" placeholder="KZE1001" required>
+        </label>
+        <label class="field">Password
+          <input class="input" id="password" type="password" autocomplete="current-password" required>
+        </label>
+        <button class="btn" type="submit" id="login-btn">Sign in</button>
+      </form>
+      <p class="faint" style="margin-top:22px">Applying for a job? <a href="/careers/login">Go to Careers</a></p>
+    </div>
+  </section>
+</div>
+<script src="/static/js/common.js?v={{VERSION}}"></script>
+<script src="/static/js/auth.js?v={{VERSION}}"></script>
+</body>
+</html>
