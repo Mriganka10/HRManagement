@@ -49,4 +49,4 @@ Employees sign in with their **user ID (`KZE####`) and password**. HR staff who 
 
 Policy answers quote the matching policy passage. If the question is about something the policies never mention (for example "maternity leave" when no such policy exists), the assistant does **not** guess. It offers to raise an HR ticket instead.
 
-**Multilingual voice** for frontline workforces is on the roadmap. The interview already uses browser speech in and out, and the assistant's planner is language-agnostic when an LLM is configured.
+**Arabic**: the assistant understands requests written in Arabic (dates, leave types, payslips, policies, tickets, documents, attendance corrections) and replies in Arabic when the portal is in Arabic — with or without an LLM. See [LANGUAGES.md](LANGUAGES.md). Multilingual *voice* for frontline workforces is on the roadmap.

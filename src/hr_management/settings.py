@@ -64,6 +64,7 @@ class Settings:
     secret_key: str = "dev-only-change-me"
     public_base_url: str = "http://127.0.0.1:8000"
     timezone: str = "Asia/Kolkata"
+    default_language: str = "en"
     data_dir: Path = PROJECT_ROOT / "data"
     database_url: str = ""
 
@@ -154,6 +155,7 @@ def load_settings() -> Settings:
         secret_key=_str("HRM_SECRET_KEY", "dev-only-change-me"),
         public_base_url=_str("HRM_PUBLIC_BASE_URL", "http://127.0.0.1:8000").rstrip("/"),
         timezone=_str("HRM_TIMEZONE", "Asia/Kolkata"),
+        default_language=_str("HRM_DEFAULT_LANGUAGE", "en"),
         data_dir=data_dir,
         database_url=_database_url(),
         cookie_secure=_bool("HRM_COOKIE_SECURE", production),

@@ -72,7 +72,8 @@ def password_problem(password: str, *, user_id: str = "", email: str = "") -> st
     if not re.search(r"[A-Za-z]", password) or not re.search(r"\d", password):
         return "Use both letters and numbers."
     lowered = password.lower()
-    if user_id and user_id.lower() in lowered or email and email.split("@")[0].lower() in lowered:
+    email_name = email.split("@")[0].lower() if email else ""
+    if user_id and user_id.lower() in lowered or len(email_name) >= 4 and email_name in lowered:
         return "Your password must not contain your user ID or email."
     if lowered in {"password123", "kairoz12345", "qwerty12345", "welcome12345"}:
         return "That password is too common."

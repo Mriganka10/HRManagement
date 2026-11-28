@@ -7,7 +7,7 @@ from typing import Annotated
 from fastapi import APIRouter, Body, Depends, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import HTMLResponse, Response
 
-from .. import auth, db
+from .. import auth, db, i18n
 from ..engines.guardrails import enforce as enforce_limit
 from ..services import (
     ServiceError, assistant, attendance, documents, leave, payroll, people, performance, policies, service_desk, talent,
@@ -249,9 +249,9 @@ def mark_read(employee: dict = Depends(me)) -> dict:
 def ask(request: Request, payload: Annotated[dict, Body()], employee: dict = Depends(me)) -> dict:
     enforce_limit("assistant", employee["employee_code"])
     history = payload.get("history") if isinstance(payload.get("history"), list) else []
-    return assistant.respond(employee, str(payload.get("message") or ""), history[-10:])
+    return assistant.respond(employee, str(payload.get("message") or ""), history[-10:], lang=i18n.request_lang(request))
 
 
 @router.post("/assistant/confirm")
-def confirm(payload: Annotated[dict, Body()], employee: dict = Depends(me)) -> dict:
-    return assistant.execute(employee, payload.get("action") or {})
+def confirm(request: Request, payload: Annotated[dict, Body()], employee: dict = Depends(me)) -> dict:
+    return assistant.execute(employee, payload.get("action") or {}, lang=i18n.request_lang(request))

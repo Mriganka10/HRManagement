@@ -10,6 +10,15 @@
     if (as === 'hr') { $('art-title').textContent = 'HR portal'; $('form-title').textContent = 'HR sign-in'; $('user_id').placeholder = 'KZH1001'; }
     if (as === 'employee') { $('art-title').textContent = 'Employee portal'; $('form-title').textContent = 'Employee sign-in'; }
     $('user_id').focus();
+    // Someone is already signed in on this browser (e.g. HR testing an employee login):
+    // say so, offer a way back, and let the form sign in as the other user (the new
+    // sign-in replaces the old session cookie).
+    api('/api/auth/me').then((me) => {
+      if (me.kind !== 'staff') return;
+      $('signed-in-who').textContent = `${me.full_name} (${me.user_id})`;
+      $('signed-in-go').href = me.must_change_password ? '/password' : (me.is_hr ? '/hr' : '/me');
+      $('signed-in').hidden = false;
+    }).catch(() => {});
     loginForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       const userId = $('user_id').value.trim().toUpperCase();

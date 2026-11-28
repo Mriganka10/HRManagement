@@ -15,7 +15,7 @@
   ];
 
   async function boot() {
-    try { me = await api('/api/auth/me'); } catch (_) { return; }
+      try { me = await api('/api/auth/me'); } catch (_) { window.location.href = '/login'; return; }
     let dash = null;
     try { dash = await api('/api/hr/dashboard'); } catch (_) { /* counts optional */ }
     const p = (dash && dash.pending) || {};
@@ -206,7 +206,7 @@
       <div class="three"><label class="field">Location<input class="input" name="location" value="${esc(r ? r.location : '')}"></label>
         <label class="field">Minimum years<input class="input" name="min_years" type="number" min="0" step="0.5" value="${esc(r ? r.min_years : 0)}"></label>
         <label class="field">Openings<input class="input" name="openings" type="number" min="1" value="${esc(r ? r.openings : 1)}"></label></div>
-      <div class="two"><label class="field">Offer CTC (₹ per year)<input class="input" name="annual_ctc" type="number" min="0" step="1000" value="${esc(r ? r.annual_ctc : '')}"></label>
+      <div class="two"><label class="field">Offer CTC (₹ per year)<input class="input" name="annual_ctc" type="number" min="0" step="1" value="${esc(r ? r.annual_ctc : '')}"></label>
         <label class="field">Employment type<select class="input" name="employment_type">${options(['Full-time', 'Contract', 'Internship'], r ? r.employment_type : 'Full-time')}</select></label></div>
       <label class="field">Required skills <span class="hint">comma separated; the ATS scores resumes against these</span><input class="input" name="skills" required value="${esc(r ? r.skills.join(', ') : '')}"></label>
       ${r ? `<label class="field">Job description<textarea class="input" name="description" rows="6">${esc(desc)}</textarea></label>
@@ -277,7 +277,7 @@
       <div class="three"><label class="field">Designation<input class="input" name="designation"></label><label class="field">Department<input class="input" name="department" list="depts"></label>
         <label class="field">Date of joining<input class="input" name="date_of_joining" type="date"></label></div>
       <div class="three"><label class="field">Phone<input class="input" name="phone"></label><label class="field">Location<input class="input" name="work_location"></label>
-        <label class="field">Annual CTC (₹)<input class="input" name="annual_ctc" type="number" min="0" step="1000"></label></div>
+        <label class="field">Annual CTC (₹)<input class="input" name="annual_ctc" type="number" min="0" step="1"></label></div>
       <label class="field">Skills <span class="hint">comma separated</span><input class="input" name="skills"></label>
       <datalist id="depts">${d.departments.map((x) => `<option value="${esc(x)}">`).join('')}</datalist>`, 'Create and email credentials', async (data) => {
       const r = await api('/api/hr/employees', { json: data });
@@ -319,7 +319,7 @@
         <div class="panel">${leaveTable(d.leave_requests, false)}</div><p><a href="#/attendance" data-emp-att="${e.id}">Attendance calendar</a></p><div id="emp-att"></div>`,
       pay: () => `<div class="grid-2"><form class="panel stack" id="salary-form"><h3>Salary</h3>
           ${d.salary ? `<p class="muted">Current CTC <b>${money(d.salary.annual_ctc)}</b> from ${date(d.salary.effective_from)}; monthly TDS ${money(d.salary.monthly_tds)}.</p>` : '<p class="muted">No salary structure yet.</p>'}
-          <div class="three"><label class="field">Annual CTC (₹)<input class="input" name="annual_ctc" type="number" min="1" step="1000" value="${d.salary ? d.salary.annual_ctc : ''}" required></label>
+          <div class="three"><label class="field">Annual CTC (₹)<input class="input" name="annual_ctc" type="number" min="1" step="1" value="${d.salary ? d.salary.annual_ctc : ''}" required></label>
             <label class="field">Monthly TDS (₹)<input class="input" name="monthly_tds" type="number" min="0" step="1" value="${d.salary ? d.salary.monthly_tds : 0}"></label>
             <label class="field">Effective from<input class="input" name="effective_from" type="date" value="${new Date().toISOString().slice(0, 10)}"></label></div>
           <button class="btn" style="justify-self:start">Save salary</button></form>

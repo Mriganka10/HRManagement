@@ -71,6 +71,7 @@ HRManagement/
 | [EMPLOYEE_PORTAL](docs/EMPLOYEE_PORTAL.md) | Self-service features and the AI assistant |
 | [HR_PORTAL](docs/HR_PORTAL.md) | Every HR section |
 | [PAYROLL](docs/PAYROLL.md) | Salary structure, payslips, deductions |
+| [LANGUAGES](docs/LANGUAGES.md) | English and Arabic: language menu, right-to-left layout, Arabic emails and assistant |
 | [SECURITY](docs/SECURITY.md) | Authentication, roles, data protection |
 | [API](docs/API.md) | Endpoint reference |
 | [AGENTS](docs/AGENTS.md) | Conventions for contributors and coding agents |

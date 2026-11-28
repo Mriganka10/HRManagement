@@ -31,7 +31,7 @@ hr-management = "hr_management.__main__:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-hr_management = ["templates/*.html", "static/css/*.css", "static/js/*.js", "static/img/*", "catalog/*.json"]
+hr_management = ["templates/*.html", "static/css/*.css", "static/js/*.js", "static/js/i18n/*.js", "static/img/*", "catalog/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

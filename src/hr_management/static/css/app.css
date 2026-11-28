@@ -449,3 +449,73 @@ dl.kv dt { color: var(--ink-3); } dl.kv dd { margin: 0; font-weight: 600; min-wi
 }
 .btn svg, .icon-btn svg { width: 18px; height: 18px; flex: none; }
 label.field > .tag-prefill { justify-self: start; margin-left: 0; }
+
+/* Login page: shown when another account is already signed in on this browser */
+.signed-in-note { display: grid; gap: 4px; background: var(--amber-soft); color: #6b4a0c; border-radius: 10px; padding: 11px 14px; margin: 4px 0 16px; font-size: .9rem; }
+.signed-in-note a { color: inherit; font-weight: 700; }
+.signed-in-note[hidden] { display: none; }
+
+/* ===================================================================== language menu */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.lang-picker { display: inline-flex; align-items: center; }
+.lang-picker select { appearance: none; -webkit-appearance: none; font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer;
+  border: 1.5px solid var(--line); border-radius: 999px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23008081' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z'/%3E%3C/svg%3E") no-repeat 10px 50%;
+  padding: 6px 12px 6px 32px; color: var(--ink); }
+.lang-picker select:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.landing header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.landing .lang-picker select, .topbar .lang-picker select { background-color: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.35);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z'/%3E%3C/svg%3E"); }
+.landing .lang-picker option, .topbar .lang-picker option { color: var(--ink); }
+.auth-panel { position: relative; }
+.lang-corner { position: absolute; top: 18px; inset-inline-end: 22px; }
+
+/* ===================================================================== Arabic (right-to-left)
+   Layout mirrors; code, IDs, emails, numbers typed in forms and the code editor stay left-to-right. */
+[lang="ar"] { --body: "IBM Plex Sans Arabic", "Plus Jakarta Sans", Tahoma, system-ui, sans-serif;
+  --display: "Noto Naskh Arabic", "IBM Plex Sans Arabic", Georgia, serif; }
+[lang="ar"] body { font-size: 15.5px; line-height: 1.7; }
+[lang="ar"] h1, [lang="ar"] h2, [lang="ar"] h3 { letter-spacing: 0; line-height: 1.35; }
+[dir="rtl"] .lang-picker select { padding: 6px 32px 6px 12px; background-position: right 10px center; }
+[dir="rtl"] #toasts { right: auto; left: 18px; }
+[dir="rtl"] .door:hover { transform: translateX(-3px); }
+[dir="rtl"] .door .go::after, [dir="rtl"] .door .go { direction: rtl; }
+[dir="rtl"] .auth-art::after { right: auto; left: -120px; }
+[dir="rtl"] .journey .fill { left: auto; right: 10%; background: linear-gradient(270deg, var(--brand), var(--mint)); }
+[dir="rtl"] .lists ul, [dir="rtl"] .swot ul, [dir="rtl"] .eligibility ul, [dir="rtl"] .msg.bot ul { padding-left: 0; padding-right: 1.1rem; }
+[dir="rtl"] .role, [dir="rtl"] .option, [dir="rtl"] .cand, [dir="rtl"] .scan-steps, [dir="rtl"] table.data th { text-align: right; }
+[dir="rtl"] table.data td.n, [dir="rtl"] table.data th.n { text-align: left; }
+[dir="rtl"] .tag-prefill { margin-left: 0; margin-right: .4rem; }
+[dir="rtl"] label.field > .tag-prefill { margin-right: 0; }
+[dir="rtl"] .nav-link .count { margin-left: 0; margin-right: auto; }
+[dir="rtl"] .icon-btn .dot { right: auto; left: 7px; }
+[dir="rtl"] .cand { border-left: 0; border-right: 4px solid var(--line); }
+[dir="rtl"] .cand.tone-passed { border-right-color: var(--mint); } [dir="rtl"] .cand.tone-rejected { border-right-color: var(--coral); }
+[dir="rtl"] .cand.tone-action { border-right-color: var(--brand); } [dir="rtl"] .cand.tone-active { border-right-color: var(--amber); }
+[dir="rtl"] .drawer { right: auto; left: 0; box-shadow: 20px 0 50px -20px rgba(6,57,58,.4); transform: translateX(-100%); }
+[dir="rtl"] .drawer.open { transform: none; }
+[dir="rtl"] .timeline { border-left: 0; border-right: 3px solid var(--line); }
+[dir="rtl"] .timeline li::before { left: auto; right: -8px; }
+[dir="rtl"] .hourglass { right: auto; left: 18px; }
+[dir="rtl"] .msg.user { border-bottom-right-radius: 14px; border-bottom-left-radius: 4px; }
+[dir="rtl"] .msg.bot { border-bottom-left-radius: 14px; border-bottom-right-radius: 4px; }
+[dir="rtl"] .typing i { margin-right: 0; margin-left: 3px; }
+@media (max-width: 860px) {
+  [dir="rtl"] .sidebar { transform: translateX(100%); right: 0; left: auto; }
+  [dir="rtl"] .sidebar.open { transform: none; }
+}
+/* Things that are always written left-to-right, whatever the interface language. */
+[dir="rtl"] pre, [dir="rtl"] code, [dir="rtl"] kbd, [dir="rtl"] .example, [dir="rtl"] textarea.answer.code,
+[dir="rtl"] input[type="email"], [dir="rtl"] input[type="url"], [dir="rtl"] input[type="tel"], [dir="rtl"] input[type="password"],
+[dir="rtl"] #user_id, [dir="rtl"] .otp-row { direction: ltr; }
+[dir="rtl"] input[type="email"], [dir="rtl"] input[type="tel"], [dir="rtl"] input[type="password"], [dir="rtl"] #user_id { text-align: right; }
+[dir="rtl"] .otp-row input { text-align: center; }
+/* Numbers like "8 / 34" read left-to-right inside Arabic text; the closed side panel casts no shadow into view. */
+[dir="rtl"] .num, [dir="rtl"] .kpi b, [dir="rtl"] .timer { direction: ltr; unicode-bidi: isolate; }
+.drawer:not(.open) { box-shadow: none; }
+/* Values (phone numbers, account numbers, emails, names) take the direction of their own text. */
+[dir="rtl"] .kv dd { unicode-bidi: plaintext; text-align: right; }
+/* The hiring-route drawing keeps its left-to-right geometry; its labels are still translated. */
+[dir="rtl"] svg.route { direction: ltr; }
+[dir="rtl"] svg.route text { unicode-bidi: plaintext; }
+[dir="rtl"] .station .note { unicode-bidi: plaintext; }
+[dir="rtl"] input.input, [dir="rtl"] textarea.input, [dir="rtl"] textarea.answer:not(.code) { unicode-bidi: plaintext; }
