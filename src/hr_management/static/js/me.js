@@ -8,7 +8,7 @@
   const chatHistory = [];
 
   async function boot() {
-    try { me = await api('/api/auth/me'); } catch (_) { return; }
+      try { me = await api('/api/auth/me'); } catch (_) { window.location.href = '/login'; return; }
     const nav = [
       { group: 'My work', items: [
         { path: '/', label: 'Home', icon: 'home' }, { path: '/assistant', label: 'HR assistant', icon: 'spark' },
@@ -93,7 +93,7 @@
       const now = new Date();
       const node = document.getElementById('clock');
       if (!node) { clearInterval(clockTimer); return; }
-      node.textContent = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+      node.textContent = now.toLocaleTimeString(H.locale, { hour: '2-digit', minute: '2-digit' });
       document.getElementById('today-date').textContent = now.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' });
     };
     tick();
@@ -248,7 +248,7 @@
     view('Attendance', '/attendance', `
       <div class="kpis">${[['Present', s.present], ['Late', s.late], ['Half day', s.half_day], ['On leave', s.on_leave], ['Absent', s.absent], ['Holidays', s.holiday]].map(([k, v]) => `<div class="kpi"><b>${v}</b><span>${k}</span></div>`).join('')}</div>
       <div class="panel"><div class="spread"><div class="row"><button class="btn ghost small" id="prev">Previous</button>
-          <h3>${first.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</h3><button class="btn ghost small" id="next">Next</button></div>
+          <h3>${first.toLocaleDateString(H.locale, { month: 'long', year: 'numeric' })}</h3><button class="btn ghost small" id="next">Next</button></div>
         <button class="btn ghost small" id="correct">Request a correction</button></div>
         <div class="calendar" style="margin-top:14px">${['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((x) => `<div class="dow">${x}</div>`).join('')}
           ${'<div></div>'.repeat(pad)}${d.days.map((x) => `<div class="day ${x.status} ${x.date === todayIso ? 'today' : ''}" title="${esc(label(x.status))}${x.holiday ? `: ${esc(x.holiday)}` : ''}">

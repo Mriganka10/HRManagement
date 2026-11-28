@@ -157,3 +157,45 @@ def test_talent_search_and_intelligence(app, hr_client):
 def test_cross_site_post_blocked(app, hr_client):
     r = hr_client.post("/api/hr/policies", json={"title": "x"}, headers={"Origin": "https://evil.example"})
     assert r.status_code == 403
+
+
+def test_new_employee_can_sign_in_on_a_browser_where_hr_is_signed_in(app, hr_client):
+    """Regression: HR adds an employee, then the employee signs in on the same browser.
+
+    /login and / used to redirect any signed-in user to their own portal, so with HR still signed
+    in the employee sign-in form never appeared. The emailed password must also work when it is
+    copied with surrounding whitespace.
+    """
+    import re
+    from hr_management.settings import get_settings
+
+    employee = _employee(hr_client, "Neha Ghosh", "neha.ghosh@example.com")
+    outbox = sorted((get_settings().outbox_dir).glob("*welcome_credentials*"))
+    html = outbox[-1].read_text(encoding="utf-8")
+    user_id = re.search(r"User ID</td><td[^>]*>([^<]+)<", html).group(1)
+    password = re.search(r"Temporary password</td><td[^>]*>([^<]+)<", html).group(1)
+    assert user_id == employee["employee_code"]
+    assert "/login?as=employee" in html
+
+    browser = hr_client  # same cookie jar: HR is signed in
+    for path in ("/", "/login", "/login?as=employee"):
+        page = browser.get(path, follow_redirects=False)
+        assert page.status_code == 200, path
+    assert 'id="login-form"' in browser.get("/login?as=employee").text
+
+    r = browser.post("/api/auth/login", json={"user_id": user_id.lower(), "password": f" {password}\n"})
+    assert r.status_code == 200, r.text
+    assert r.json()["redirect"] == "/password"
+    assert browser.get("/api/auth/me").json()["user_id"] == user_id  # the HR session was replaced
+    r = browser.post("/api/auth/change-password", json={"current_password": password, "new_password": "Sunrise2026x"})
+    assert r.status_code == 200 and r.json()["redirect"] == "/me"
+    assert browser.get("/me", follow_redirects=False).status_code == 200
+    assert browser.get("/api/me/home").status_code == 200
+
+
+def test_short_email_name_does_not_block_passwords(app, hr_client):
+    # hr@… must be able to pick a password containing the letters "hr".
+    from conftest import HR_PASSWORD
+
+    r = hr_client.post("/api/auth/change-password", json={"current_password": HR_PASSWORD, "new_password": "Threshold2026"})
+    assert r.status_code == 200, r.text

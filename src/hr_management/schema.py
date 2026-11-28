@@ -237,4 +237,7 @@ def statements(postgres: bool) -> list[str]:
 
 
 # (table, column, definition) — columns added after a table first shipped.
-ADDITIVE_COLUMNS: list[tuple[str, str, str]] = []
+ADDITIVE_COLUMNS: list[tuple[str, str, str]] = [
+    ("users", "lang", "TEXT"),      # candidate's interface/email language (en, ar)
+    ("accounts", "lang", "TEXT"),   # employee/HR interface/email language (en, ar)
+]

@@ -6,11 +6,12 @@ Interactive docs: `/docs` (development only). Sessions are an HTTP-only cookie s
 
 ## Sign-in (`/api/auth`)
 
-Candidate codes, staff password sign-in, password change, sign-out, current user.
+Candidate codes, staff password sign-in, password change, interface language, sign-out, current user.
 
 | Method | Path | Endpoint |
 |---|---|---|
 | POST | `/api/auth/change-password` | Change Password |
+| POST | `/api/auth/language` | Set Language — `{"lang": "en" | "ar"}`; sets the `hrm_lang` cookie and, when signed in, saves it on the person |
 | POST | `/api/auth/login` | Login |
 | POST | `/api/auth/logout` | Logout |
 | GET | `/api/auth/me` | Me |

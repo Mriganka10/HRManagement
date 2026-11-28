@@ -60,7 +60,12 @@ def login(user_id: str, password: str) -> dict:
     if locked_until and locked_until > db.utcnow():
         minutes = max(1, int((locked_until - db.utcnow()).total_seconds() // 60) + 1)
         raise ServiceError(f"Too many failed attempts. Try again in {minutes} minute(s) or ask HR to reset your password.", 423)
-    if not auth.verify_password(password or "", account["password_hash"]):
+    password = password or ""
+    matched = auth.verify_password(password, account["password_hash"])
+    if not matched and password != password.strip():
+        # Copying the temporary password out of an email often brings a trailing space or newline.
+        matched = auth.verify_password(password.strip(), account["password_hash"])
+    if not matched:
         failures = int(account["failed_logins"]) + 1
         fields = {"failed_logins": failures}
         if failures >= cfg.login_max_failures:
@@ -121,7 +126,7 @@ def set_active(target_id: int, active: bool, *, actor: dict) -> None:
 
 def public(account: dict) -> dict:
     return {key: account.get(key) for key in ("id", "user_id", "email", "full_name", "role", "employee_id",
-                                              "must_change_password", "is_active", "last_login_at")}
+                                              "must_change_password", "is_active", "last_login_at", "lang")}
 
 
 def bootstrap_hr_admin() -> None:

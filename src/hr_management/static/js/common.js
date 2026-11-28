@@ -18,7 +18,10 @@
     const response = await fetch(path, init);
     let data = {};
     try { data = await response.json(); } catch (_) { /* empty body */ }
-    if (response.status === 401) { window.location.href = window.HRM_LOGIN || '/login'; throw new Error('Please sign in.'); }
+    // 401 from a portal API = the session ended -> back to sign-in. Sign-in APIs themselves
+    // (/api/auth/*) answer 401 for a wrong password or "nobody signed in"; those must reach
+    // the page as a normal error, or the sign-in form would just reload with no message.
+    if (response.status === 401 && !path.startsWith('/api/auth/')) { window.location.href = window.HRM_LOGIN || '/login'; throw new Error('Please sign in.'); }
     if (response.status === 403 && /new password/i.test(data.detail || '')) { window.location.href = '/password'; throw new Error(data.detail); }
     if (!response.ok) {
       const detail = Array.isArray(data.detail) ? data.detail.map((d) => d.msg).join(', ') : data.detail;
@@ -135,6 +138,10 @@
     return Number.isInteger(n) ? String(n) : n.toFixed(digits || 1);
   }
 
+  // Dates and times follow the interface language (Arabic month names with Latin digits);
+  // money keeps Indian digit grouping (₹12,34,567) in every language.
+  const LOCALE = (window.HRM_LANG && window.HRM_LANG.locale) || 'en-IN';
+
   function money(value) {
     if (value === null || value === undefined || value === '') return '–';
     return `₹${Number(value).toLocaleString('en-IN', { maximumFractionDigits: 2, minimumFractionDigits: Number(value) % 1 ? 2 : 0 })}`;
@@ -146,12 +153,12 @@
     if (Number.isNaN(d.getTime())) return esc(value);
     const opts = { day: 'numeric', month: 'short', year: 'numeric' };
     if (withTime) Object.assign(opts, { hour: '2-digit', minute: '2-digit' });
-    return d.toLocaleString('en-IN', opts);
+    return d.toLocaleString(LOCALE, opts);
   }
 
   function time(value) {
     if (!value) return '–';
-    return new Date(value).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+    return new Date(value).toLocaleTimeString(LOCALE, { hour: '2-digit', minute: '2-digit' });
   }
 
   function label(value) { return String(value || '').replace(/_/g, ' '); }
@@ -273,11 +280,11 @@
           <a class="nav-link" href="#${it.path}" data-path="${it.path}">${icon(it.icon)}${esc(it.label)}${it.count ? `<span class="count">${it.count}</span>` : ''}</a>`).join('')}</nav>`).join('')}
         <div class="me"><span class="avatar">${esc((me.full_name || me.email || '?').slice(0, 1).toUpperCase())}</span>
           <div><b>${esc(me.full_name)}</b><span>${esc(subtitle)}</span></div>
-          <button class="btn link" id="logout" title="Sign out" aria-label="Sign out" style="margin-left:auto;color:#9fc2c1">${icon('logout')}</button></div>
+          <button class="btn link" id="logout" title="Sign out" aria-label="Sign out" style="margin-inline-start:auto;color:#9fc2c1">${icon('logout')}</button></div>
       </aside>
       <div class="portal-main"><header class="portal-top">
         <div class="row"><button class="icon-btn menu-toggle" id="menu" aria-label="Menu">${icon('menu')}</button><h1 id="page-title"></h1></div>
-        <div class="row" id="top-actions"><button class="icon-btn" id="bell" aria-label="Notifications">${icon('bell')}</button></div></header>
+        <div class="row" id="top-actions">${window.HRM_LANG ? window.HRM_LANG.picker('portal-lang') : ''}<button class="icon-btn" id="bell" aria-label="Notifications">${icon('bell')}</button></div></header>
         <main class="portal-content" id="content" tabindex="-1"></main></div></div>
       <div class="scrim hidden" id="scrim"></div><aside class="drawer" id="drawer" aria-hidden="true"></aside>`;
     document.getElementById('logout').addEventListener('click', logout);
@@ -328,5 +335,6 @@
   window.HRM = {
     esc, api, toast, busy, act, confetti, confirmDialog, formDialog, formObject, logout, fmt, money, date, time, label, pill,
     table, bars, dial, animateIn, router, icon, shell, setPage, openDrawer, closeDrawer, options,
+    locale: LOCALE, t: (text) => (window.HRM_LANG ? window.HRM_LANG.t(text) : text),
   };
 })();

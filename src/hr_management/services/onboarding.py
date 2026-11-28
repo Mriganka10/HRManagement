@@ -16,7 +16,7 @@ from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
 
-from .. import db, notifications, pipeline, storage
+from .. import db, i18n, notifications, pipeline, storage
 from ..engines.resume import parse_resume
 from ..roles import get_role
 from ..settings import get_settings
@@ -273,6 +273,7 @@ def submit(app: dict, raw: dict, *, confirmed: bool) -> dict:
         raise
     db.update("onboarding", record["id"], {"status": "completed", "employee_id": employee["id"],
                                            "submitted_at": db.now_iso(), "updated_at": db.now_iso()})
+    i18n.remember(i18n.lang_for_email(app["email"]), account_id=account["id"])  # keep the candidate's language
     db.transition_stage(app["id"], (pipeline.SELECTED,), pipeline.HIRED)
     db.add_event(app["id"], "hired", actor=app["email"], from_stage=pipeline.SELECTED, to_stage=pipeline.HIRED,
                  detail={"employee_code": employee["employee_code"]})

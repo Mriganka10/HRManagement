@@ -20,9 +20,14 @@
     <p class="faint" style="color:#7fa3a2;margin:0">Forgot your password? Ask HR to reset it — a temporary one is emailed to you.</p>
   </section>
   <section class="auth-panel">
+    <div class="lang-corner">{{LANG_PICKER}}</div>
     <div class="auth-card">
       <h2 id="form-title">Sign in</h2>
       <p class="muted">Employees and HR use the same sign-in.</p>
+      <div class="signed-in-note" id="signed-in" hidden>
+        <span>You are signed in as <b id="signed-in-who"></b>.</span>
+        <span><a id="signed-in-go" href="/">Continue to your portal</a> or sign in below with a different user ID.</span>
+      </div>
       <form id="login-form" novalidate>
         <label class="field">User ID
           <input class="input" id="user_id" autocomplete="username" autocapitalize="characters" placeholder="KZE1001" required>

@@ -16,6 +16,7 @@ All settings are environment variables prefixed `HRM_`.
 | `HRM_SECRET_KEY` | dev key | Signs session cookies and hashes sign-in codes. Changing it signs everyone out. **Secret** |
 | `HRM_PUBLIC_BASE_URL` | `http://127.0.0.1:8000` | Used in email links and the logo URL in emails |
 | `HRM_TIMEZONE` | `Asia/Kolkata` | Attendance times, the late cutoff and "today" |
+| `HRM_DEFAULT_LANGUAGE` | `en` | Interface and email language (`en` or `ar`) for people who have not picked one. Everyone can switch with the language menu; see [LANGUAGES.md](LANGUAGES.md) |
 
 ## First HR administrator
 
